@@ -30,28 +30,68 @@ const LESSICO = [
     type: "Noun",
     gender: "Masculine",
     meaning: "Breakfast pastry (croissant)",
-    usage: "Southern Italy (Puglia). Essential regional terminology.",
+    usage: "Southern Italy (Puglia). Essential regional terminology when visiting Marco's family.",
     sentence: "Prendo un cornetto vuoto e un caffè.",
     translation: "I'll have a plain croissant and a coffee."
   },
   {
-    id: "delizioso",
-    word: "Delizioso",
-    type: "Adjective",
-    meaning: "Delicious",
-    usage: "Use this to compliment the chef or waiter at a restaurant.",
-    sentence: "Il cibo è delizioso, complimenti!",
-    translation: "The food is delicious, my compliments!"
+    id: "pensierino",
+    word: "Il Pensierino",
+    type: "Noun",
+    gender: "Masculine",
+    meaning: "A little gift / a small thought",
+    usage: "Use this when giving Marco's brother the gift for his dog.",
+    sentence: "Ti ho portato un pensierino per Arturo!",
+    translation: "I brought you a little something for Arturo!"
   },
   {
-    id: "spremuta",
-    word: "La Spremuta",
+    id: "taglia",
+    word: "La Taglia",
     type: "Noun",
     gender: "Feminine",
-    meaning: "Freshly squeezed juice",
-    usage: "Commonly 'spremuta d'arancia' (orange juice) at breakfast.",
-    sentence: "Vorrei anche una spremuta d'arancia fresca.",
-    translation: "I would also like a fresh squeezed orange juice."
+    meaning: "Clothing size",
+    usage: "Crucial for shopping or giving clothes as a gift.",
+    sentence: "È stato un acquisto alla cieca, spero che la taglia gli vada bene.",
+    translation: "It was a blind buy, I hope the size fits him."
+  },
+  {
+    id: "bucato",
+    word: "Il Bucato",
+    type: "Noun",
+    gender: "Masculine",
+    meaning: "The laundry",
+    usage: "Great for talking about daily chores.",
+    sentence: "Io faccio quasi sempre il bucato.",
+    translation: "I almost always do the laundry."
+  },
+  {
+    id: "cuoco",
+    word: "Il Cuoco",
+    type: "Noun",
+    gender: "Masculine",
+    meaning: "The cook / chef",
+    usage: "Remember to use the masculine noun since Marco is a guy.",
+    sentence: "Marco è un bravissimo cuoco.",
+    translation: "Marco is a very good cook."
+  },
+  {
+    id: "tour-gastronomico",
+    word: "Il Tour Gastronomico",
+    type: "Noun",
+    gender: "Masculine",
+    meaning: "Food tour / culinary journey",
+    usage: "Perfect for describing your travel plans from Milan to Puglia.",
+    sentence: "Il nostro tour gastronomico inizierà da Milano.",
+    translation: "Our food tour will start from Milan."
+  },
+  {
+    id: "neanche",
+    word: "Neanche",
+    type: "Adverb",
+    meaning: "Neither / not even",
+    usage: "Use this instead of 'anche' when agreeing with a negative statement.",
+    sentence: "Non gli piace neanche il burro o il formaggio.",
+    translation: "He doesn't even like butter or cheese."
   }
 ];
 
@@ -60,9 +100,9 @@ const VERBS = [
     id: "andare",
     word: "Andare",
     meaning: "To go",
-    usage: "Irregular movement verb. Uses 'Essere' as the auxiliary in compound tenses.",
-    sentence: "Vado a Milano domani.",
-    translation: "I am going to Milan tomorrow.",
+    usage: "Always needs the preposition 'A' before a following verb (e.g., andiamo a visitare).",
+    sentence: "Sto andando a cenare con Marco.",
+    translation: "I am going to have dinner with Marco.",
     conjugations: {
       presente: ["vado", "vai", "va", "andiamo", "andate", "vanno"],
       passatoProssimo: ["sono andato/a", "sei andato/a", "è andato/a", "siamo andati/e", "siete andati/e", "sono andati/e"],
@@ -72,79 +112,114 @@ const VERBS = [
     }
   },
   {
-    id: "sapere",
-    word: "Sapere",
-    meaning: "To know (facts/skills)",
-    usage: "Used for facts or knowing how to do something (e.g., skills).",
-    sentence: "Non so dove sia il bagno.",
-    translation: "I don't know where the bathroom is.",
+    id: "stare",
+    word: "Stare",
+    meaning: "To stay / To be",
+    usage: "Used for 'How are you?' (Come stai?), for relationships (Stiamo insieme), and present continuous (Sto andando).",
+    sentence: "Stiamo insieme da due anni e mezzo.",
+    translation: "We have been together for two and a half years.",
     conjugations: {
-      presente: ["so", "sai", "sa", "sappiamo", "sapete", "sanno"],
-      passatoProssimo: ["ho saputo", "hai saputo", "ha saputo", "abbiamo saputo", "avete saputo", "hanno saputo"],
-      imperfetto: ["sapevo", "sapevi", "sapeva", "sapevamo", "sapevate", "sapevano"],
-      futuroSemplice: ["saprò", "saprai", "saprà", "sapremo", "saprete", "sapranno"],
-      condizionale: ["saprei", "sapresti", "saprebbe", "sapremmo", "sapreste", "saprebbero"]
+      presente: ["sto", "stai", "sta", "stiamo", "state", "stanno"],
+      passatoProssimo: ["sono stato/a", "sei stato/a", "è stato/a", "siamo stati/e", "siete stati/e", "sono stati/e"],
+      imperfetto: ["stavo", "stavi", "stava", "stavamo", "stavate", "stavano"],
+      futuroSemplice: ["starò", "starai", "starà", "staremo", "starete", "staranno"],
+      condizionale: ["starei", "staresti", "starebbe", "staremmo", "stareste", "starebbero"]
     }
   },
   {
-    id: "volere",
-    word: "Volere",
-    meaning: "To want",
-    usage: "Essential modal verb for ordering and requests.",
-    sentence: "Vorrei ordinare un caffè.",
-    translation: "I would like to order a coffee.",
+    id: "fare",
+    word: "Fare",
+    meaning: "To do / To make",
+    usage: "Incredibly versatile. Used for making food, doing chores, and taking trips.",
+    sentence: "Lui fa molti piatti giapponesi.",
+    translation: "He makes many Japanese dishes.",
     conjugations: {
-      presente: ["voglio", "vuoi", "vuole", "vogliamo", "volete", "vogliono"],
-      passatoProssimo: ["ho voluto", "hai voluto", "ha voluto", "abbiamo voluto", "avete voluto", "hanno voluto"],
-      imperfetto: ["volevo", "volevi", "voleva", "volevamo", "volevate", "volevano"],
-      futuroSemplice: ["vorrò", "vorrai", "vorrà", "vorremo", "vorrete", "vorranno"],
-      condizionale: ["vorrei", "vorresti", "vorrebbe", "vorremmo", "vorreste", "vorrebbero"]
+      presente: ["faccio", "fai", "fa", "facciamo", "fate", "fanno"],
+      passatoProssimo: ["ho fatto", "hai fatto", "ha fatto", "abbiamo fatto", "avete fatto", "hanno fatto"],
+      imperfetto: ["facevo", "facevi", "faceva", "facevamo", "facevate", "facevano"],
+      futuroSemplice: ["farò", "farai", "farà", "faremo", "farete", "faranno"],
+      condizionale: ["farei", "faresti", "farebbe", "faremmo", "fareste", "farebbero"]
+    }
+  },
+  {
+    id: "conoscere",
+    word: "Conoscere",
+    meaning: "To know (people/places) / To meet for the first time",
+    usage: "Use this instead of 'riconoscere' when talking about meeting Marco's family.",
+    sentence: "Li ho già conosciuti, questa sarà la seconda volta.",
+    translation: "I've already met them, this will be the second time.",
+    conjugations: {
+      presente: ["conosco", "conosci", "conosce", "conosciamo", "conoscete", "conoscono"],
+      passatoProssimo: ["ho conosciuto", "hai conosciuto", "ha conosciuto", "abbiamo conosciuto", "avete conosciuto", "hanno conosciuto"],
+      imperfetto: ["conoscevo", "conoscevi", "conosceva", "conoscevamo", "conoscevate", "conoscevano"],
+      futuroSemplice: ["conoscerò", "conoscerai", "conoscerà", "conosceremo", "conoscerete", "conosceranno"],
+      condizionale: ["conoscerei", "conosceresti", "conoscerebbe", "conosceremmo", "conoscereste", "conoscerebbero"]
     }
   }
 ];
 
 const GRAMMAR_TIPS = [
   {
-    title: "Formalità: Tu vs. Lei",
+    title: "Possessive Adjectives & Family Members",
     points: [
-      "Use 'Lei' (Formal) with seniors, shopkeepers, and people you don't know[cite: 712].",
-      "Use 'Tu' (Informal) for peers and young people[cite: 712].",
-      "Standard Greeting: 'Piacere di conoscerti' (Informal) vs. 'Piacere di conoscerLa' (Formal)[cite: 708]."
+      "Rule: DO NOT use 'il' or 'la' with singular family members.",
+      "Correct: 'Suo padre' (His dad), 'Sua madre' (His mom).",
+      "Incorrect: 'Il suo padre' or 'La sua madre'.",
+      "Exception: If plural or modified, use the article (e.g., 'I suoi genitori', 'Il mio fratellino')."
     ]
   },
   {
-    title: "Preposizioni di Luogo",
+    title: "Expressing Time: 'Da' vs. 'Fa'",
     points: [
-      "A + City: 'Vado a Milano'.",
-      "IN + Region/Country: 'Vado in Puglia' or 'in Italia'.",
-      "DA + Person: 'Vado da Luca' (to Luca's place)."
+      "Use 'FA' for things that ended in the past (AGO). Example: 'Ci siamo conosciuti due anni fa' (We met 2 years ago).",
+      "Use 'DA' for things that started in the past and are still true now (FOR/SINCE).",
+      "Correct: 'Stiamo insieme da due anni' (We have been together for 2 years)."
     ]
   },
   {
-    title: "Particelle CI e NE",
+    title: "The Verb 'Piacere' (To Like)",
     points: [
-      "CI: Often indicates a place or is part of pronominal verbs like 'pensarci'.",
-      "NE: Used for quantities or replacing 'of it/of them'."
+      "It literally means 'to be pleasing to'. The thing you like is the subject.",
+      "Use 'piace' for singular things: 'Gli piace il formaggio' (Cheese is pleasing to him).",
+      "Use 'piacciono' for plural things: 'Non gli piacciono i piatti del nord' (Northern dishes are not pleasing to him)."
+    ]
+  },
+  {
+    title: "Verbs of Movement + Preposition 'A'",
+    points: [
+      "Whenever you use a movement verb (Andare, Venire) followed by an infinitive verb, you MUST insert 'A' between them.",
+      "Correct: 'Sto andando a cenare' (I am going to eat dinner).",
+      "Correct: 'Andiamo a visitare la sua famiglia' (We are going to visit his family)."
     ]
   }
 ];
 
 const CONVERSATIONS = [
   {
-    title: "Ordinare al Bar (Milano)",
+    title: "Compliments for Marco's Mom in Puglia",
     type: "Dialogue",
     lines: [
-      { speaker: "Barista", text: "Buongiorno! Cosa vi porto?", en: "Good morning! What can I get you?" },
-      { speaker: "Tu", text: "Buongiorno! Vorrei un cappuccino e una brioche alla crema, per favore.", en: "Good morning! I'd like a cappuccino and a cream croissant, please." },
-      { speaker: "Barista", text: "Certamente. Altro?", en: "Certainly. Anything else?" },
-      { speaker: "Tu", text: "No, grazie. Il conto?", en: "No, thanks. The bill?" }
+      { speaker: "Mamma", text: "Hai fame? Ti ho preparato le orecchiette, mangia mangia!", en: "Are you hungry? I made orecchiette for you, eat eat!" },
+      { speaker: "Tu", text: "Signora, è tutto buonissimo! Ha le mani d'oro.", en: "Ma'am, everything is delicious! You have golden hands (you're a great cook)." },
+      { speaker: "Mamma", text: "Grazie cara! Ne vuoi ancora?", en: "Thank you dear! Do you want more?" },
+      { speaker: "Tu", text: "Sì, posso avere il bis? È una meraviglia.", en: "Yes, can I have seconds? It's wonderful." }
     ]
   },
   {
-    title: "Suggerimenti per Milano",
+    title: "Talking About Your Relationship",
     type: "Monologue",
-    content: "Visto che hai pochissimo tempo, fai una bella passeggiata nel centro storico. Vai a vedere il Duomo di Milano, è magnifico! Poi fai due passi nella Galleria Vittorio Emanuele II. La sera, andate a fare un classico aperitivo ai Navigli.",
-    translation: "Since you have very little time, take a nice walk in the historic center. Go see the Duomo, it's magnificent! Then walk through the Galleria. In the evening, go for a classic aperitivo at the Navigli."
+    content: "Io e Marco stiamo insieme da due anni e mezzo, e viviamo insieme da due anni. Lui è un bravissimo cuoco, fa molti piatti giapponesi o mediorientali, ma non gli piacciono i piatti del nord. Io, d'altra parte, faccio quasi sempre io il bucato!",
+    translation: "Marco and I have been together for two and a half years, and we've been living together for two years. He is a great cook, he makes a lot of Japanese or Middle Eastern dishes, but he doesn't like Northern Italian dishes. I, on the other hand, almost always do the laundry!"
+  },
+  {
+    title: "Giving the Gift in Milan",
+    type: "Dialogue",
+    lines: [
+      { speaker: "Tu", text: "Ciao! Ti ho portato un pensierino.", en: "Hi! I brought you a little something." },
+      { speaker: "Fratello", text: "Ma grazie! Cos'è?", en: "Well thank you! What is it?" },
+      { speaker: "Tu", text: "Per Arturo ho comprato una magliettina. L'ho già conosciuto, ma non so quanto pesa.", en: "I bought a little t-shirt for Arturo. I've already met him, but I don't know how much he weighs." },
+      { speaker: "Tu", text: "Quindi è stato un acquisto alla cieca... spero che la taglia gli vada bene!", en: "So it was a blind buy... I hope the size fits him!" }
+    ]
   }
 ];
 
@@ -318,7 +393,7 @@ export default function ItalianCrashCourse() {
         )}
 
         {/* 4. CONVERSATIONS */}
-        {activeTab === "conversazioni" && (activeTab === "conversazioni" && (
+        {activeTab === "conversazioni" && (
           <div className="max-w-3xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 font-sans">
             {CONVERSATIONS.map((conv, idx) => (
               <div key={idx} className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
@@ -353,7 +428,7 @@ export default function ItalianCrashCourse() {
               </div>
             ))}
           </div>
-        ))}
+        )}
 
       </main>
     </div>
