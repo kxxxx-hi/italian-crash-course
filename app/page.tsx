@@ -1,179 +1,182 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { 
-  BookOpen, Scale, Search, GitBranch, Feather, 
-  Globe, Lightbulb, ArrowRight, Utensils, Languages, MapPin, Coffee
+  Search, GitBranch, Globe, Lightbulb, ArrowRight, 
+  Utensils, Languages, MapPin, BookOpen, Info 
 } from 'lucide-react';
 
 // ==========================================
-// 1. ITALIAN VOCABULARY (The new "Lexicon")
+// 1. DATA SOURCES (Refined for Italian Hub)
 // ==========================================
 
 const ITALIAN_LEXICON = [
   {
     id: "brioche",
     word: "La Brioche",
-    usage: "Northern Italian Breakfast",
-    etymology: "From French 'brioche'. Used specifically in Milan/North.",
-    vibe: "The Milanese Morning. Flaky, sweet, paired with a cappuccino.",
-    sentence: "Vorrei una brioche alla crema, per favore.",
-    translation: "I would like a cream croissant, please.",
+    type: "Noun",
+    gender: "Feminine",
+    usage: "Northern Italy",
+    vibe: "Milanese breakfast staple.",
+    sentence: "Vorrei una brioche alla crema.",
+    translation: "I would like a cream croissant.",
     category: "Food",
   },
   {
     id: "cornetto",
     word: "Il Cornetto",
-    usage: "Southern Italian Breakfast",
-    etymology: "From 'piccolo corno' (little horn).",
-    vibe: "The Southern Staple. Essential for your trip to Puglia.",
-    sentence: "Un cornetto e un caffè macchiato.",
-    translation: "A croissant and a macchiato coffee.",
+    type: "Noun",
+    gender: "Masculine",
+    usage: "Southern Italy",
+    vibe: "Essential for your trip to Puglia.",
+    sentence: "Prendo un cornetto vuoto e un caffè.",
+    translation: "I'll have a plain croissant and a coffee.",
     category: "Food",
   },
   {
-    id: "magari",
-    word: "Magari",
-    usage: "Expressing Desire or 'Maybe'",
-    etymology: "From Greek 'makarie' (blessed).",
-    vibe: "The Dreamer. 'I wish!' or 'If only it were true!'",
-    sentence: "Vuoi venire in Italia? Magari!",
-    translation: "Do you want to come to Italy? I wish!",
-    category: "Conversational",
+    id: "andare",
+    word: "Andare",
+    type: "Verb",
+    conjugation: "vado, vai, va, andiamo, andate, vanno",
+    usage: "Movement away",
+    vibe: "Irregular. Requieres 'essere' in past tenses.",
+    sentence: "Vado a Milano domani.",
+    translation: "I am going to Milan tomorrow.",
+    category: "Grammar",
+  },
+  {
+    id: "venire",
+    word: "Venire",
+    type: "Verb",
+    conjugation: "vengo, vieni, viene, veniamo, venite, vengono",
+    usage: "Movement toward",
+    vibe: "Use for invitations or joining the listener.",
+    sentence: "Vuoi venire con noi in Puglia?",
+    translation: "Do you want to come with us to Puglia?",
+    category: "Grammar",
   },
   {
     id: "pasticceria",
     word: "La Pasticceria",
-    usage: "Pastry Shop",
-    etymology: "From 'pasta' (dough/paste).",
-    vibe: "The High-Quality Choice. Better than a standard bar for breakfast.",
-    sentence: "Cerchiamo una pasticceria storica a Brera.",
-    translation: "Let's look for a historic pastry shop in Brera.",
+    type: "Noun",
+    gender: "Feminine",
+    usage: "Quality Breakfast",
+    vibe: "The location you look for to find real brioche.",
+    sentence: "Dov'è la pasticceria più vicina?",
+    translation: "Where is the nearest pastry shop?",
     category: "Travel",
   }
 ];
 
-// ==========================================
-// 2. GRAMMAR CONTRASTS (The new "Battleground")
-// ==========================================
-
 const GRAMMAR_BATTLES = [
-  {
-    id: "tu-lei",
-    title: "Tu vs. Lei",
-    icon: "👥",
-    description: "Informal vs. Formal Politeness",
-    pair: [
-      { term: "Tu", role: "Friends & Peers", logic: "Use with young people, friends, and family. (Piacere di conoscerti)." },
-      { term: "Lei", role: "Seniors & Pros", logic: "Use with elders, waiters, and shopkeepers. (Piacere di conoscerLa)." }
-    ]
-  },
-  {
-    id: "andare-venire",
-    title: "Andare vs. Venire",
-    icon: "🚶",
-    description: "Direction of Movement",
-    pair: [
-      { term: "Andare", role: "Going Away", logic: "Moving toward a place where the listener IS NOT." },
-      { term: "Venire", role: "Coming Toward", logic: "Moving toward the listener or an invitation. (Vuoi venire con noi?)" }
-    ]
-  },
   {
     id: "sapere-conoscere",
     title: "Sapere vs. Conoscere",
     icon: "🧠",
-    description: "Facts vs. Familiarity",
     pair: [
-      { term: "Sapere", role: "The Fact", logic: "To know a piece of information or a skill. (So dove abita)." },
-      { term: "Conoscere", role: "The Person/Place", logic: "To be acquainted with a person or place. (Conosco Milano)." }
-    ]
-  }
-];
-
-// ==========================================
-// 3. TRAVEL GUIDE (The specialized Hub)
-// ==========================================
-
-const TRAVEL_GUIDE = [
-  {
-    id: "milan",
-    title: "Late May in Milano",
-    sections: [
-      {
-        topic: "The Aperitivo Ritual",
-        content: "Head to the Navigli district. Order a 'Negroni Sbagliato' or a 'Spritz' between 6 PM and 8 PM.",
-        tips: ["Duomo at sunrise", "Galleria Vittorio Emanuele", "Navigli canals"]
+      { 
+        term: "Sapere", 
+        role: "Facts/Skills", 
+        logic: "To know info or how to do something.",
+        conj: "so, sai, sa, sappiamo, sapete, sanno" 
+      },
+      { 
+        term: "Conoscere", 
+        role: "People/Places", 
+        logic: "To be acquainted/familiar with.",
+        conj: "conosco, conosci, conosce, conosciamo..." 
       }
     ]
   },
   {
-    id: "puglia",
-    title: "Heading South to Puglia",
+    id: "essere-avere",
+    title: "Essere vs. Avere",
+    icon: "⚖️",
+    pair: [
+      { 
+        term: "Essere", 
+        role: "Movement/State", 
+        logic: "Used for 'andare', 'arrivare', and reflexives.",
+        conj: "sono, sei, è, siamo, siete, sono" 
+      },
+      { 
+        term: "Avere", 
+        role: "Transitive", 
+        logic: "Used for most other verbs (mangiare, comprare).",
+        conj: "ho, hai, ha, abbiamo, avete, hanno" 
+      }
+    ]
+  }
+];
+
+const TRAVEL_GUIDE = [
+  {
+    id: "milano",
+    title: "Milano Essentials",
     sections: [
       {
-        topic: "Ordering in the South",
-        content: "Language is more informal but regional terms matter. The food is 'delizioso' (delicious).",
+        topic: "Geography & Dining",
+        content: "In Milano, it is always 'Brioche'. Order at the counter (banco) or sit (tavolo).",
         phrases: [
-          { it: "Vengo dagli Stati Uniti.", en: "I come from the United States." },
-          { it: "Il cibo è eccezionale!", en: "The food is exceptional!" }
+          { it: "Un caffè amaro, per favore.", en: "A bitter coffee (no sugar), please." }
         ]
+      },
+      {
+        topic: "The Navigli Night",
+        content: "Late May is perfect for aperitivo by the canals.",
+        tips: ["Order a Spritz", "Check out the Duomo at dusk"]
       }
     ]
   }
 ];
 
 // ==========================================
-// 4. COMPONENTS
+// 2. COMPONENTS
 // ==========================================
 
 const ItalianWordCard = ({ data }: { data: any }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-all duration-300 flex flex-col h-full">
+  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-all duration-300 flex flex-col h-full font-sans">
     <div className="flex justify-between items-start mb-4">
       <h3 className="text-3xl font-serif font-bold text-emerald-900">{data.word}</h3>
-      <span className="text-xs font-mono bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full uppercase tracking-tighter">
-        {data.category}
-      </span>
-    </div>
-    <div className="mb-4">
-      <div className="flex items-center gap-2 text-emerald-600 font-medium text-sm mb-2 uppercase tracking-widest">
-        <Languages size={16} />
-        <span>{data.usage}</span>
+      <div className="flex flex-col items-end gap-1">
+        <span className="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full uppercase">
+          {data.type}
+        </span>
+        {data.gender && (
+          <span className="text-[10px] font-bold bg-stone-100 text-stone-500 px-2 py-0.5 rounded-full uppercase">
+            {data.gender}
+          </span>
+        )}
       </div>
-      <p className="text-slate-600 text-sm leading-relaxed italic">{data.etymology}</p>
     </div>
-    <div className="bg-stone-50 p-4 rounded-lg mb-4 border-l-4 border-emerald-500">
-      <p className="text-slate-700 text-sm italic">{data.vibe}</p>
+
+    <div className="mb-4">
+      {data.conjugation ? (
+        <div className="mb-2 p-2 bg-emerald-50/50 rounded border border-emerald-100">
+           <p className="text-[10px] uppercase text-emerald-600 font-bold mb-1">Conjugation</p>
+           <p className="text-xs text-emerald-800 font-mono italic">{data.conjugation}</p>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2 text-emerald-600 font-medium text-xs mb-2 uppercase tracking-widest">
+          <Info size={14} />
+          <span>{data.usage}</span>
+        </div>
+      )}
     </div>
-    <div className="space-y-1">
-      <p className="text-emerald-900 font-bold">"{data.sentence}"</p>
+
+    <div className="bg-stone-50 p-4 rounded-lg mb-4 border-l-4 border-emerald-500 italic text-stone-700 text-sm">
+      {data.vibe}
+    </div>
+
+    <div className="mt-auto space-y-1">
+      <p className="text-emerald-950 font-bold text-lg">"{data.sentence}"</p>
       <p className="text-slate-400 text-xs">— {data.translation}</p>
     </div>
   </div>
 );
 
-const BattleCard = ({ data }: { data: any }) => (
-  <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-    <div className="bg-stone-50 p-4 border-b border-slate-200 flex items-center gap-3">
-      <span className="text-2xl">{data.icon}</span>
-      <h3 className="text-lg font-bold text-slate-800">{data.title}</h3>
-    </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-      {data.pair.map((item: any, idx: number) => (
-        <div key={idx} className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="font-serif text-xl font-bold text-emerald-700">{item.term}</span>
-            <ArrowRight size={16} className="text-slate-300" />
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">{item.role}</span>
-          </div>
-          <p className="text-sm text-slate-700 leading-relaxed">{item.logic}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
 // ==========================================
-// 5. MAIN APP
+// 3. MAIN APP
 // ==========================================
 
 export default function ItalianHubApp() {
@@ -182,19 +185,22 @@ export default function ItalianHubApp() {
 
   const filteredVocab = ITALIAN_LEXICON.filter(item => 
     item.word.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.usage.toLowerCase().includes(searchQuery.toLowerCase())
+    item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] text-slate-800 font-sans">
+    <div className="min-h-screen bg-[#fafaf9] text-slate-800 font-sans selection:bg-emerald-100">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <header className="mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+        <header className="mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-stone-200 pb-8">
           <div className="flex items-center gap-3">
-            <div className="bg-emerald-600 p-2 rounded-lg text-white">
-              <Globe size={24} />
+            <div className="bg-emerald-700 p-2 rounded-xl text-white shadow-lg shadow-emerald-200">
+              <Globe size={28} />
             </div>
-            <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-tight">Italian Travel Hub</h1>
+            <div>
+              <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-tight">Italian Travel Hub</h1>
+              <p className="text-xs text-stone-400 uppercase tracking-[0.2em] font-bold">May 2024 Expedition</p>
+            </div>
           </div>
           
           <nav className="flex space-x-1 bg-stone-200/50 p-1 rounded-xl border border-stone-200">
@@ -203,7 +209,7 @@ export default function ItalianHubApp() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2 text-sm font-bold rounded-lg transition-all capitalize ${
-                  activeTab === tab ? "bg-white text-emerald-700 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                  activeTab === tab ? "bg-white text-emerald-700 shadow-sm" : "text-stone-500 hover:text-slate-700"
                 }`}
               >
                 {tab === "guida" ? "Travel Guide 🇮🇹" : tab}
@@ -213,55 +219,92 @@ export default function ItalianHubApp() {
         </header>
 
         {activeTab === "vocabolario" && (
-          <>
+          <div className="animate-in fade-in duration-500">
             <div className="relative max-w-2xl mx-auto mb-12">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
               <input
                 type="text"
-                placeholder="Cerca parole o frasi..."
+                placeholder="Cerca parole, categorie o verbi..."
                 className="w-full pl-12 pr-4 py-4 border border-stone-200 rounded-2xl bg-white shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredVocab.map((item) => <ItalianWordCard key={item.id} data={item} />)}
             </div>
-          </>
+          </div>
         )}
 
         {activeTab === "grammatica" && (
           <div className="space-y-8 max-w-4xl mx-auto animate-in fade-in duration-500">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-serif font-bold text-slate-900 italic">Confronti Grammaticali</h2>
-              <p className="text-slate-600 mt-2 text-lg">Mastering the nuances of local speech.</p>
+              <h2 className="text-4xl font-serif font-bold text-slate-900 italic underline decoration-emerald-200 underline-offset-8">La Grammatica</h2>
+              <p className="text-stone-500 mt-4 text-lg font-serif italic">Distinguishing the building blocks of the language.</p>
             </div>
-            {GRAMMAR_BATTLES.map((battle) => <BattleCard key={battle.id} data={battle} />)}
+            {GRAMMAR_BATTLES.map((battle) => (
+              <div key={battle.id} className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
+                <div className="bg-stone-50 p-4 border-b border-stone-200 flex items-center gap-3">
+                  <span className="text-2xl">{battle.icon}</span>
+                  <h3 className="text-xl font-bold text-slate-800">{battle.title}</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-stone-100">
+                  {battle.pair.map((item: any, idx: number) => (
+                    <div key={idx} className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="font-serif text-2xl font-bold text-emerald-700">{item.term}</span>
+                        <ArrowRight size={16} className="text-stone-300" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-stone-400 bg-stone-50 px-2 py-1 rounded">{item.role}</span>
+                      </div>
+                      <p className="text-sm text-slate-600 mb-4 leading-relaxed">{item.logic}</p>
+                      <div className="p-3 bg-emerald-50/30 rounded-lg border border-emerald-50 italic text-xs text-emerald-900">
+                        {item.conj}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {activeTab === "guida" && (
-          <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {TRAVEL_GUIDE.map((trip) => (
-              <div key={trip.id} className="bg-white rounded-2xl border border-stone-200 p-8 shadow-sm">
-                <h3 className="text-3xl font-serif font-bold text-emerald-900 mb-6 flex items-center gap-3">
-                  <MapPin className="text-emerald-600" /> {trip.title}
+              <div key={trip.id} className="space-y-8">
+                <h3 className="text-4xl font-serif font-bold text-slate-900 flex items-center gap-3 italic">
+                  <MapPin className="text-emerald-600" size={32} /> {trip.title}
                 </h3>
-                {trip.sections.map((section, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <h4 className="text-xl font-bold text-slate-800 border-b border-stone-100 pb-2">{section.topic}</h4>
-                    <p className="text-slate-600 leading-relaxed">{section.content}</p>
-                    {section.tips && (
-                      <div className="flex flex-wrap gap-2">
-                        {section.tips.map((tip, i) => (
-                          <span key={i} className="bg-stone-100 text-stone-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tight">
-                            {tip}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                <div className="grid gap-6">
+                  {trip.sections.map((section: any, idx) => (
+                    <div key={idx} className="bg-white rounded-2xl border border-stone-200 p-8 shadow-sm group">
+                      <h4 className="text-xl font-bold text-slate-800 border-b border-stone-100 pb-3 mb-4 group-hover:text-emerald-700 transition-colors">{section.topic}</h4>
+                      <p className="text-slate-600 leading-relaxed mb-6">{section.content}</p>
+                      
+                      {/* FIXED VERCEL ISSUE: Defensive property checking */}
+                      {section.phrases && (
+                        <div className="grid gap-3">
+                          {section.phrases.map((p: any, i: number) => (
+                            <div key={i} className="p-3 bg-stone-50 rounded-lg border border-stone-100">
+                              <p className="text-emerald-900 font-bold italic">"{p.it}"</p>
+                              <p className="text-stone-400 text-xs">{p.en}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {section.tips && (
+                        <div className="flex flex-wrap gap-2 mt-4">
+                          {section.tips.map((tip: string, i: number) => (
+                            <span key={i} className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-emerald-100">
+                              Tip: {tip}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
